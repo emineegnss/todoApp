@@ -10,12 +10,15 @@ export class TodoService {
     @Inject('baseUrl') private baseUrl,
     private httpClient: HttpClient
   ) { }
+
+
+
    addTodo(obj) {
     return this.httpClient.post(this.baseUrl + '/todo', obj);
   }
 
   getAllTodos() {
-    return this.httpClient.get(this.baseUrl + '/todo');
+    return this.httpClient.get(this.baseUrl);
   }
 
   updateTodo(obj) {

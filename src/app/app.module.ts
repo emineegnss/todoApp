@@ -32,7 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,MatInputModule,MatCardModule,DragDropModule,FormsModule,HttpClientModule,MatIconModule
   ],
   providers: [
-    { provide: 'baseUrl', useValue: 'https://api.limantech.com/todo' }
+    { provide: 'baseUrl', useValue: 'https://localhost:7052/api/Todos' }
   ],
   bootstrap: [AppComponent]
 })

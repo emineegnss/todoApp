@@ -35,20 +35,21 @@ export class HomeComponent implements OnInit {
        
         
     }
-    this.updateTodo();
+     this.updateTodo();
+  
   
 
-
   }
- addTodo(todo){
-  const obj ={todo: todo.value};
-  this.todoService.addTodo(obj).subscribe((res) => {
-   console.log(res);
-   this.getAllTodos();
-  },(err)=>{
-    console.log(err)
-  });
- }
+  async addTodo(todo) {
+    const obj = { todo: todo.value };
+    try {
+      await this.todoService.addTodo(obj).toPromise();
+      console.log("Todo başarıyla eklendi.");
+      await this.getAllTodos();
+    } catch (err) {
+      console.error('Hata oluştu:', err);
+    }
+  }
  getAllTodos(){
   this.todoService.getAllTodos().subscribe((test)=>{
     Object.keys(test).forEach((key) => {
@@ -61,17 +62,17 @@ export class HomeComponent implements OnInit {
     console.log(err)
   })
  }
- updateTodo(){
-  this.todoService.updateTodo(this.data).subscribe(
-    () => {
-      console.log("Veriler güncellendi.");
-    },
-    (err) => {
+ 
+ updateTodo() {
+  this.todoService.updateTodo(this.data)
+    .subscribe((res) => {
+      console.log(res);
+    }, (err) => {
       console.log(err);
-    }
-  );
+    });
+}
 
- }
+}
 
   // addTodo(todo) {
   //   //console.log(todo.value)
@@ -89,4 +90,3 @@ export class HomeComponent implements OnInit {
   //   });
 
   // }
-}
