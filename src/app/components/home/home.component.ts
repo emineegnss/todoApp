@@ -4,6 +4,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { TodoService } from 'src/app/services/todo.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService,public snackBar:MatSnackBar) {}
 
   ngOnInit() {
     this.getAllTodos();
@@ -40,38 +41,55 @@ export class HomeComponent implements OnInit {
   
 
   }
-  async addTodo(todo) {
+  addTodo(todo) {
     const obj = { todo: todo.value };
-    try {
-      await this.todoService.addTodo(obj).toPromise();
-      console.log("Todo başarıyla eklendi.");
-      await this.getAllTodos();
-    } catch (err) {
-      console.error('Hata oluştu:', err);
-    }
+    this.todoService.addTodo(obj)
+      .subscribe((res: any) => {
+       this.openSnackBar(res.message);
+        this.getAllTodos();
+        todo.value = '';
+      }, (err) => {
+        console.log(err);
+      });
   }
- getAllTodos(){
-  this.todoService.getAllTodos().subscribe((test)=>{
-    Object.keys(test).forEach((key) => {
-      this.data[key] = test[key];
-      console.log(key);
-      console.log(test[key]);
 
-    })
-  },(err)=>{
-    console.log(err)
-  })
- }
- 
- updateTodo() {
-  this.todoService.updateTodo(this.data)
-    .subscribe((res) => {
-      console.log(res);
-    }, (err) => {
-      console.log(err);
+  getAllTodos() {
+    this.todoService.getAllTodos()
+      .subscribe((res) => {
+        console.log(res);
+        Object.keys(res).forEach((key) => {
+          this.data[key] = res[key];
+        });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  updateTodo() {
+    this.todoService.updateTodo(this.data)
+      .subscribe((res) => {
+        console.log(res);
+      }, (err) => {
+        console.log(err);
+      });
+  }
+  removeTodo(id){
+    if(confirm('Bu maddeyi silmek istediğinizden emin misiniz?')){
+      this.todoService.removeTodo(id).subscribe((res)=>{
+        console.log(res);
+        this.getAllTodos();
+      },(err) =>{
+        console.log(err)
+      }
+      )
+    }
+   
+  }
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Tamam', {
+      duration: 2000,
     });
-}
-
+  }
 }
 
   // addTodo(todo) {

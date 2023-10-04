@@ -81,10 +81,9 @@ body {
     .button {
         opacity: 0;
         transition: .3s;
-        button {
-          height: 24px;
+        height: 16px;
           line-height: 24px;
-        }
+       margin-bottom: 20px;
       }
       &:hover {
         .button {

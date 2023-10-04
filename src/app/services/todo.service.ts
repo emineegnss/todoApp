@@ -8,25 +8,22 @@ import {HttpClient} from '@angular/common/http'
 export class TodoService {
   constructor(
     @Inject('baseUrl') private baseUrl,
-    private httpClient: HttpClient
+    private http: HttpClient
   ) { }
 
-
-
-   addTodo(obj) {
-    return this.httpClient.post(this.baseUrl + '/todo', obj);
+  addTodo(obj) {
+    return this.http.post(this.baseUrl + '/todo', obj);
   }
 
   getAllTodos() {
-    return this.httpClient.get(this.baseUrl);
+    return this.http.get(this.baseUrl + '/todo');
   }
 
   updateTodo(obj) {
-    return this.httpClient.post(this.baseUrl + '/todo', obj);
-  }
-
-  removeTodo(id) {
-    return this.httpClient.delete(this.baseUrl + '/todo/' + id);
-  }
-
+    
+    return this.http.put(this.baseUrl + '/todo', obj);
+}
+removeTodo(id){
+  return this.http.delete(this.baseUrl + '/todo/' + id);
+}
 }
